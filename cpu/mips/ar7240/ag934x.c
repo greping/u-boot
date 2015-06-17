@@ -319,12 +319,19 @@ static void ag7240_hw_start(ag7240_mac_t *mac)
     ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_2, 0xAAA0555);
 
     ag7240_reg_rmw_set(mac, AG7240_MAC_FIFO_CFG_4, 0x3ffff);
-    /* 
+
+	// TODO: check this register
+	/*
+	 * When enable the web failsafe mode in uboot,you can't drop the broadcast
+	 * frames now,the PC first will tx a ARP request packet, it's a broadcast packet.
+	 */
+	ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_5, 0x66b82);
+
+	/* 
      * Setting Drop CRC Errors, Pause Frames,Length Error frames 
      * and Multi/Broad cast frames. 
      */
-
-    ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_5, 0x7eccf);
+//    ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_5, 0x7eccf);
 
     ag7240_reg_wr(mac, AG7240_MAC_FIFO_CFG_3, 0x1f00140);
 

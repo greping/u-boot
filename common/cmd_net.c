@@ -34,6 +34,12 @@
 extern int do_bootm (cmd_tbl_t *, int, int, char *[]);
 
 static int netboot_common (proto_t, cmd_tbl_t *, int , char *[]);
+
+int do_httpd(cmd_tbl_t *cmdtp, int flag, int argc, char *argv[]){
+	return NetLoopHttpd();
+}
+U_BOOT_CMD(httpd, 1, 1, do_httpd, "start www server for firmware recovery\n", NULL);
+
 #ifndef COMPRESSED_UBOOT
 int do_bootp (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 {

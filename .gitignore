@@ -32,7 +32,14 @@
 *.dSYM/
 
 # Other
+.gitignore
 *.map
 *.depend
 *.bat
 *.bin
+*.srec
+*.lzimg
+/u-boot
+/u-boot.srec
+*.png
+*.jar

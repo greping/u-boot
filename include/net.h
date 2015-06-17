@@ -364,8 +364,18 @@ extern IPaddr_t	NetNtpServerIP;			/* the ip address to NTP 	*/
 extern int NetTimeOffset;			/* offset time from UTC		*/
 #endif
 
+static inline void eth_set_last_protocol(int protocol){
+#ifdef CONFIG_NETCONSOLE
+	extern proto_t net_loop_last_protocol;
+	net_loop_last_protocol = protocol;
+#endif
+}
+
 /* Initialize the network adapter */
 extern int	NetLoop(proto_t);
+extern int	NetLoopHttpd(void);
+extern void	NetSendHttpd(void);
+
 
 /* Shutdown adapters and cleanup */
 extern void	NetStop(void);

@@ -4,6 +4,12 @@
 #define CONFIG_AR7240 1
 #define CONFIG_WASP 1
 #define FLASH_SIZE 16
+#define GPIO_RST_BUTTON_IS_ACTIVE_LOW	1
+#define GPIO_RST_BUTTON_BIT	20
+#define CONFIG_DELAY_TO_AUTORUN_HTTPD	3
+#define CONFIG_DELAY_TO_AUTORUN_CONSOLE	5
+#define CONFIG_DELAY_TO_AUTORUN_NETCONSOLE	7
+#define CONFIG_MAX_BUTTON_PRESSING	10
 
 /* Automatically generated - do not edit */
 #include <configs/db12x.h>

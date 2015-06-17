@@ -36,6 +36,10 @@
 
 #include <post.h>
 
+extern int reset_button_status(void);
+extern int NetLoopHttpd(void);
+
+
 #ifdef CONFIG_SILENT_CONSOLE
 DECLARE_GLOBAL_DATA_PTR;
 #endif
@@ -302,6 +306,8 @@ void main_loop (void)
 #endif
 
 	int result;
+	int num = 0;
+	int counts = 0;
 
 #if defined(CONFIG_BOOTDELAY) && (CONFIG_BOOTDELAY >= 0)
 	char *s;
@@ -420,9 +426,67 @@ void main_loop (void)
 		findbdr(0);
 #endif
 
+		// are we going to run web failsafe mode, U-Boot console, U-Boot netconsole or just boot command?
+		if(reset_button_status()){
+
+			// wait 0,5s
+			milisecdelay(500);
+
+			printf("Reset button is pressed for: %2d ", counts);
+
+			while(reset_button_status()){
+
+				// LED ON and wait 0,15s
+	//			all_led_on();
+				milisecdelay(150);
+
+				// LED OFF and wait 0,85s
+	//			all_led_off();
+				milisecdelay(850);
+
+				counts++;
+
+				// how long the button is pressed?
+				printf("\b\b\b%2d ", counts);
+
+				if(!reset_button_status()){
+					break;
+				}
+
+				if(counts >= CONFIG_MAX_BUTTON_PRESSING){
+					break;
+				}
+			}
+
+	//		all_led_off();
+
+			if(counts > 0){
+
+				// run web failsafe mode
+				if(counts >= CONFIG_DELAY_TO_AUTORUN_HTTPD && counts < CONFIG_DELAY_TO_AUTORUN_CONSOLE){
+					printf("\n\nButton was pressed for %d sec...\nHTTP server is starting for firmware update...\n\n", counts);
+	 				NetLoopHttpd();
+					bootdelay = -1;
+				} else if(counts >= CONFIG_DELAY_TO_AUTORUN_CONSOLE && counts < CONFIG_DELAY_TO_AUTORUN_NETCONSOLE){
+					printf("\n\nButton was pressed for %d sec...\nStarting U-Boot console...\n\n", counts);
+					bootdelay = -1;
+				} else if(counts >= CONFIG_DELAY_TO_AUTORUN_NETCONSOLE){
+					printf("\n\nButton was pressed for %d sec...\nStarting U-Boot netconsole...\n\n", counts);
+					bootdelay = -1;
+	//				run_command("startnc", 0);
+				} else {
+					printf("\n\n## Error: button wasn't pressed long enough!\nContinuing normal boot...\n\n");
+				}
+
+			} else {
+				printf("\n\n## Error: button wasn't pressed long enough!\nContinuing normal boot...\n\n");
+			}
+
+		}
+
 		unsigned char *p = (unsigned char *)0x9ff70000;
 		char flag[20] = "";
-		strncpy(flag, p, 12);
+		memcpy(flag, p, 12);
 		debug("flag = %s\n", flag);
 
 #if 1
@@ -470,12 +534,16 @@ again:
 //add bootenv by greping at 2015.6.2
 		if(result)
 		{
+			num ++;
+			if(num > 1)
+				goto bad;
 			s = getenv("bootcmd");
 			if(!strcmp(s, "bootm 0x9f680000"))
 			{
 				setenv ("bootcmd", "bootm 0x9fe10000");
 				setenv ("bootargs", "board=SINO-SN901N console=ttyS0,115200 mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),6336k(rootfs_bak),1408k(kernel_bak),6336k(rootfs),1408k(kernel),64k(cfg),64k(oem),64k@0xff0000(art)ro,7744k@0x50000(firmware) root=31:4 rootfstype=squashfs,jffs2 noinitrd");
 				saveenv();
+				s = getenv ("bootcmd");
 				goto again;
 			}
 			else if(!strcmp(s, "bootm 0x9fe10000"))
@@ -483,8 +551,14 @@ again:
 				setenv("bootcmd", "bootm 0x9f680000");
 				setenv ("bootargs", "board=SINO-SN901N console=ttyS0,115200 mtdparts=spi0.0:256k(u-boot)ro,64k(u-boot-env),6336k(rootfs),1408k(kernel),6336k(rootfs_bak),1408k(kernel_bak),64k(cfg),64k(oem),64k@0xff0000(art)ro,7744k@0x7e0000(firmware) root=31:2 rootfstype=squashfs,jffs2 noinitrd");
 				saveenv();
+				s = getenv ("bootcmd");
 				goto again;
 			}
+
+			bad:
+			// something goes wrong!
+			printf("\n## Error: failed to execute 'bootcmd'!\nHTTP server is starting for firmware update...\n\n");
+			NetLoopHttpd();
 		}
 # endif
 

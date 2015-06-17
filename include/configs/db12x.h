@@ -377,6 +377,39 @@
 #define CONFIG_MEMSIZE_IN_BYTES
 #define CONFIG_PCI 1
 
+/*
+ * Web Failsafe configuration
+ */
+#define WEBFAILSAFE_UPLOAD_RAM_ADDRESS				CONFIG_LOADADDR
+#define WEBFAILSAFE_UPLOAD_UBOOT_ADDRESS			CFG_FLASH_BASE
+
+// Firmware partition offset
+#define WEBFAILSAFE_UPLOAD_KERNEL_ADDRESS			WEBFAILSAFE_UPLOAD_UBOOT_ADDRESS + 0x50000
+
+// U-Boot partition size
+#define WEBFAILSAFE_UPLOAD_UBOOT_SIZE_IN_BYTES		(64 * 1024)
+#define UPDATE_SCRIPT_UBOOT_SIZE_IN_BYTES			"0x10000"
+
+// ART partition size
+#define WEBFAILSAFE_UPLOAD_ART_SIZE_IN_BYTES		(64 * 1024)
+
+// max. firmware size <= (FLASH_SIZE -  WEBFAILSAFE_UPLOAD_LIMITED_AREA_IN_BYTES)
+// TP-Link: 64k(U-Boot),64k(MAC/model/WPS pin block),64k(ART)
+#define WEBFAILSAFE_UPLOAD_LIMITED_AREA_IN_BYTES	(192 * 1024)
+
+// progress state info
+#define WEBFAILSAFE_PROGRESS_START				0
+#define WEBFAILSAFE_PROGRESS_TIMEOUT			1
+#define WEBFAILSAFE_PROGRESS_UPLOAD_READY		2
+#define WEBFAILSAFE_PROGRESS_UPGRADE_READY		3
+#define WEBFAILSAFE_PROGRESS_UPGRADE_FAILED		4
+
+// update type
+#define WEBFAILSAFE_UPGRADE_TYPE_FIRMWARE		0
+#define WEBFAILSAFE_UPGRADE_TYPE_UBOOT			1
+#define WEBFAILSAFE_UPGRADE_TYPE_ART			2
+
+
 /*-----------------------------------------------------------------------
  * Cache Configuration
  */
@@ -444,6 +477,24 @@
 #endif
 
 #define CONFIG_COMMANDS			(ATH_CFG_COMMANDS | ATH_EXTRA_CMD)
+
+/*
+ * Other env default values
+ */
+#undef CONFIG_BOOTFILE
+#define CONFIG_BOOTFILE		"firmware.bin"
+
+#undef CONFIG_LOADADDR
+#define CONFIG_LOADADDR		0x80800000
+
+#define	CFG_LOAD_ADDR			 0x9F050000
+#define UPDATE_SCRIPT_FW_ADDR	"0x9F050000"
+#define CONFIG_BOOTCOMMAND 		"bootm 0x9F680000"
+
+#undef DEBUG
+#define milisecdelay(_x)			udelay((_x) * 1000)
+
+
 
 #define CONFIG_IPADDR			192.168.1.1
 #define CONFIG_SERVERIP			192.168.1.10

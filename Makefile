@@ -135,6 +135,7 @@ ifdef SOC
 LIBS += cpu/$(CPU)/$(SOC)/lib$(SOC).a
 endif
 LIBS += lib_$(ARCH)/lib$(ARCH).a
+LIBS += httpd/libhttpd.a
 
 #ifeq ($(KERNELVER),2.6.31)
 LIBS += drivers/libdrivers.a
@@ -2024,6 +2025,13 @@ endif
 ifeq ($(DB12X_P2P_ENV), 1)
 	@echo "#define CONFIG_DB12X_P2P 1" >>include/config.h
 endif
+
+	@echo '#define GPIO_RST_BUTTON_IS_ACTIVE_LOW	1' >>include/config.h
+	@echo '#define GPIO_RST_BUTTON_BIT	20' >>include/config.h
+	@echo '#define CONFIG_DELAY_TO_AUTORUN_HTTPD	3' >>include/config.h
+	@echo '#define CONFIG_DELAY_TO_AUTORUN_CONSOLE	5' >>include/config.h
+	@echo '#define CONFIG_DELAY_TO_AUTORUN_NETCONSOLE	7' >>include/config.h
+	@echo '#define CONFIG_MAX_BUTTON_PRESSING	10' >>include/config.h
 
 	@./mkconfig -a db12x mips mips db12x ar7240 ar7240
 

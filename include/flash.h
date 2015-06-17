@@ -420,6 +420,9 @@ extern void flash_read_factory_serial(flash_info_t * info, void * buffer, int of
 
 #define FLASH_UNKNOWN	0xFFFF		/* unknown flash type			*/
 
+#define FLASH_CUSTOM    0x1111
+
+
 
 /* manufacturer offsets
  */

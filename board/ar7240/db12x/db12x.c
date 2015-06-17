@@ -127,3 +127,28 @@ int	checkboard(args)
 #endif
 	return 0;
 }
+
+
+//add by greping at 2015.6.11
+int reset_button_status(void){
+	unsigned int gpio;
+
+	//set GPIO_RST_BUTTON_BIT as input
+	ar7240_reg_rmw_set(0x18040000, (1 << GPIO_RST_BUTTON_BIT));
+
+	gpio = ar7240_reg_rd(AR934X_GPIO_IN);
+
+	if(gpio & (1 << GPIO_RST_BUTTON_BIT)){
+#if defined(GPIO_RST_BUTTON_IS_ACTIVE_LOW)
+		return(0);
+#else
+		return(1);
+#endif
+	} else {
+#if defined(GPIO_RST_BUTTON_IS_ACTIVE_LOW)
+		return(1);
+#else
+		return(0);
+#endif
+	}
+}
