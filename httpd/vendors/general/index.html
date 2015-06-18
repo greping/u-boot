@@ -7,9 +7,12 @@
 	</head>
 	<body>
 		<div id="m">
-			<h1>FIRMWARE UPDATE</h1>
-			<p>You are going to update <strong>firmware</strong> on the device.<br>Please, choose file from your local hard drive and click <strong>Update firmware</strong> button.</p>
-			<form method="post" enctype="multipart/form-data"><input type="file" name="firmware"><input type="submit" value="Update firmware"></form>
+			<h1>U-BOOT & FIRMWARE & ART UPDATE</h1>
+			<p>You are going to update <strong>u-boot or firmware or art</strong> on the device.<br>Please, choose file from your local hard drive and click <strong>Update</strong> button.</p>
+			<form method="post" enctype="multipart/form-data"><input type="file" name="uboot"><input style="width:130px;" type="submit" value="Update U-Boot"></form>
+            <form method="post" enctype="multipart/form-data">   
+              <input type="file" name="firmware"><input type="submit" style="width:130px;" value="Update firmware"></form>
+            <form method="post" enctype="multipart/form-data"><input type="file" name="art"><input type="submit" style="width:130px;"  value="Update ART"></form>
 			<div class="i w">
 				<strong>WARNINGS</strong>
 				<ul>
@@ -19,6 +22,5 @@
 				</ul>
 			</div>
 		</div>
-		<div id="f">You can find more information about this project on <a href="https://github.com/pepe2k/u-boot_mod" target="_blank">GitHub</a></div>
 	</body>
 </html>

@@ -43,3 +43,4 @@
 /u-boot.srec
 *.png
 *.jar
+/httpd/fsdata.c

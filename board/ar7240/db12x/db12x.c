@@ -134,7 +134,7 @@ int reset_button_status(void){
 	unsigned int gpio;
 
 	//set GPIO_RST_BUTTON_BIT as input
-	ar7240_reg_rmw_set(0x18040000, (1 << GPIO_RST_BUTTON_BIT));
+	ar7240_reg_rmw_set(AR934X_GPIO_BASE, (1 << GPIO_RST_BUTTON_BIT));
 
 	gpio = ar7240_reg_rd(AR934X_GPIO_IN);
 
