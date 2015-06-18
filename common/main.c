@@ -426,6 +426,7 @@ void main_loop (void)
 		findbdr(0);
 #endif
 
+#if 0
 		// are we going to run web failsafe mode, U-Boot console, U-Boot netconsole or just boot command?
 		if(reset_button_status()){
 
@@ -484,12 +485,12 @@ void main_loop (void)
 
 		}
 
+
 		unsigned char *p = (unsigned char *)0x9ff70000;
 		char flag[20] = "";
 		memcpy(flag, p, 12);
 		debug("flag = %s\n", flag);
 
-#if 1
 change:
 		s = getenv("bootcmd");
 		if(!strcmp(s, "bootm 0x9f680000"))

@@ -76,3 +76,17 @@ ul {
 	margin: 0 0 5px;
 	display: block;
 }
+
+p {
+	padding: 10px;
+}
+
+[type = file] {
+	width:300px;
+	font-size:14px;
+}
+
+[type = submit] {
+	width:150px;
+	font-size:14px;
+}
