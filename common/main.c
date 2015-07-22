@@ -36,7 +36,6 @@
 
 #include <post.h>
 
-extern int reset_button_status(void);
 extern int NetLoopHttpd(void);
 
 
@@ -431,17 +430,18 @@ void main_loop (void)
 
 			// wait 0,5s
 			milisecdelay(500);
+			all_led_off();
 
 			printf("Reset button is pressed for: %2d ", counts);
 
 			while(reset_button_status()){
 
 				// LED ON and wait 0,15s
-	//			all_led_on();
+				all_led_on();
 				milisecdelay(150);
 
 				// LED OFF and wait 0,85s
-	//			all_led_off();
+				all_led_off();
 				milisecdelay(850);
 
 				counts++;
@@ -458,7 +458,7 @@ void main_loop (void)
 				}
 			}
 
-	//		all_led_off();
+			all_led_off();
 
 			if(counts > 0){
 

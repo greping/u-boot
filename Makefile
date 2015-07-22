@@ -2026,6 +2026,8 @@ ifeq ($(DB12X_P2P_ENV), 1)
 	@echo "#define CONFIG_DB12X_P2P 1" >>include/config.h
 endif
 
+	@echo "#define GPIO_SYS_LED_BIT		19" >>include/config.h
+	@echo "#define GPIO_SYS_LED_ON		0" >>include/config.h
 	@echo '#define GPIO_RST_BUTTON_IS_ACTIVE_LOW	1' >>include/config.h
 	@echo '#define GPIO_RST_BUTTON_BIT	20' >>include/config.h
 	@echo '#define CONFIG_DELAY_TO_AUTORUN_HTTPD	3' >>include/config.h

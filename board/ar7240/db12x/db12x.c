@@ -10,6 +10,9 @@
 #include <nand.h>
 #endif
 
+#define SETBITVAL(val, pos, bit) do {ulong bitval = (bit) ? 0x1 : 0x0; (val) = ((val) & ~(0x1 << (pos))) | ( (bitval) << (pos));} while(0)
+
+
 extern int wasp_ddr_initial_config(uint32_t refresh);
 extern int ar7240_ddr_find_size(void);
 
@@ -130,6 +133,27 @@ int	checkboard(args)
 
 
 //add by greping at 2015.6.11
+void all_led_on(void){
+	unsigned int gpio;
+
+	gpio = ar7240_reg_rd(AR934X_GPIO_OUT);
+
+
+	SETBITVAL(gpio, GPIO_SYS_LED_BIT,      GPIO_SYS_LED_ON);
+
+	ar7240_reg_wr(AR934X_GPIO_OUT, gpio);
+}
+
+void all_led_off(void){
+	unsigned int gpio;
+
+	gpio = ar7240_reg_rd(AR934X_GPIO_OUT);
+
+
+	SETBITVAL(gpio, GPIO_SYS_LED_BIT,      !GPIO_SYS_LED_ON);
+
+	ar7240_reg_wr(AR934X_GPIO_OUT, gpio);
+}
 int reset_button_status(void){
 	unsigned int gpio;
 

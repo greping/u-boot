@@ -488,7 +488,7 @@
 
 #define	CFG_LOAD_ADDR			 0x9F050000
 #define UPDATE_SCRIPT_FW_ADDR	"0x9F050000"
-#define CONFIG_BOOTCOMMAND 		"bootm 0x9F680000"
+#define CONFIG_BOOTCOMMAND 		"bootm 0x9f680000"
 
 #undef DEBUG
 #define milisecdelay(_x)			udelay((_x) * 1000)
